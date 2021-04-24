@@ -8,4 +8,4 @@
 ## Reference
 |이름|소스 코드|설명|
 |:---:|:---:|:---:|
-|[Octokit.NET](https://github.com/octokit/octokit.net)|.|GitHub API|
+|[Octokit.NET](https://github.com/octokit/octokit.net)|[MainWindow.xaml.cs](https://github.com/MineEric64/Git4Nextop/blob/main/MainWindow.xaml.cs)|GitHub API|
