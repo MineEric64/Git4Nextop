@@ -9,9 +9,8 @@
     <Grid>
         <Button x:Name="xPush" Content="Push" HorizontalAlignment="Left" Margin="68,314,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
         <Button x:Name="xPull" Content="Pull" HorizontalAlignment="Left" Margin="221,314,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="60,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <TextBox HorizontalAlignment="Left" Height="23" Margin="60,70,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
-        <Button x:Name="xLogin" Content="Login" HorizontalAlignment="Left" Margin="60,98,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button x:Name="xLogin" Content="Login" HorizontalAlignment="Left" Margin="68,105,0,0" VerticalAlignment="Top" Width="120" Click="xLogin_Click"/>
+        <PasswordBox x:Name="xToken" HorizontalAlignment="Left" Margin="68,77,0,0" VerticalAlignment="Top" Width="120" PasswordChar="*"/>
 
     </Grid>
 </Window>
