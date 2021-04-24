@@ -9,3 +9,4 @@
 |이름|소스 코드|설명|
 |:---:|:---:|:---:|
 |[Octokit.NET](https://github.com/octokit/octokit.net)|[GitManager.cs](https://github.com/MineEric64/Git4Nextop/blob/main/Clients/GitManager.cs), [MainWindow.xaml.cs](https://github.com/MineEric64/Git4Nextop/blob/main/MainWindow.xaml.cs)|GitHub API|
+|[LibGit2Sharp](https://github.com/libgit2/libgit2sharp)|.|Git API|
