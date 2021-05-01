@@ -14,7 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-using Octokit;
+using LibGit2Sharp;
 
 using ProjectGFN.Clients;
 
@@ -48,6 +48,8 @@ namespace ProjectGFN
             {
                 Trace.WriteLine(repo.Name);
             }
+
+            using (var repo = new Repository())
         }
     }
 }

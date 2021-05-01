@@ -7,10 +7,17 @@
         mc:Ignorable="d"
         Title="Git4Nextop" Height="450" Width="800">
     <Grid>
-        <Button x:Name="xPush" Content="Push" HorizontalAlignment="Left" Margin="68,314,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
-        <Button x:Name="xPull" Content="Pull" HorizontalAlignment="Left" Margin="221,314,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
-        <Button x:Name="xLogin" Content="Login" HorizontalAlignment="Left" Margin="68,105,0,0" VerticalAlignment="Top" Width="120" Click="xLogin_Click"/>
-        <PasswordBox x:Name="xToken" HorizontalAlignment="Left" Margin="68,77,0,0" VerticalAlignment="Top" Width="120" PasswordChar="*"/>
+        <Button x:Name="xPush" Content="Push" HorizontalAlignment="Left" Margin="177,306,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
+        <Button x:Name="xPull" Content="Pull" HorizontalAlignment="Left" Margin="330,306,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
+        <Button x:Name="xLogin" Content="Login" HorizontalAlignment="Left" Margin="175,97,0,0" VerticalAlignment="Top" Width="120" Click="xLogin_Click"/>
+        <PasswordBox x:Name="xToken" HorizontalAlignment="Left" Margin="175,69,0,0" VerticalAlignment="Top" Width="120" PasswordChar="*"/>
+        <ListView HorizontalAlignment="Left" Height="198" Margin="330,47,0,0" VerticalAlignment="Top" Width="121">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
 
     </Grid>
 </Window>
