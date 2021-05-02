@@ -28,28 +28,39 @@ namespace ProjectGFN
         public MainWindow()
         {
             InitializeComponent();
+
+            this.Loaded += MainWindow_Loaded;
         }
 
-        private async void xLogin_Click(object sender, RoutedEventArgs e)
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            var token = xToken.Password;
-
-            if (string.IsNullOrWhiteSpace(token))
+            Action<LoginWindow> onLogin = async (LoginWindow s) =>
             {
-                MessageBox.Show("Can't login", this.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
+                s.Close();
+                this.IsEnabled = true;
 
-            await GitManager.Initialize(token);
+                var repo = await GitManager.GetRepositoriesAsync();
 
-            var user = await GitManager.GetCurrentUserAsync();
+                foreach (var item in repo)
+                {
+                    this.xRepos.Items.Add(item.Name);
+                }
+            };
+            var login = new LoginWindow(onLogin);
 
-            foreach (var repo in GitManager.Repositories)
-            {
-                Trace.WriteLine(repo.Name);
-            }
 
-            using (var repo = new Repository())
+            login.Show();
+            this.IsEnabled = false;
+        }
+
+        private void xClone_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void xPush_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
