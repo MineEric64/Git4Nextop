@@ -18,6 +18,9 @@ using LibGit2Sharp;
 
 using ProjectGFN.Clients;
 
+using GitHubRepo = Octokit.Repository;
+using GitRepo = LibGit2Sharp.Repository;
+
 namespace ProjectGFN
 {
     /// <summary>
@@ -25,6 +28,8 @@ namespace ProjectGFN
     /// </summary>
     public partial class MainWindow : Window
     {
+        public const string MainTitle = "Git4Nextop";
+
         public MainWindow()
         {
             InitializeComponent();
@@ -43,7 +48,7 @@ namespace ProjectGFN
 
                 foreach (var item in repo)
                 {
-                    this.xRepos.Items.Add(item.Name);
+                    this.xRepos.Items.Add(item.FullName);
                 }
             };
             var login = new LoginWindow(onLogin);
@@ -53,14 +58,30 @@ namespace ProjectGFN
             this.IsEnabled = false;
         }
 
-        private void xClone_Click(object sender, RoutedEventArgs e)
+        private async void xClone_Click(object sender, RoutedEventArgs e)
         {
+            string fullName = xRepos.SelectedItem as string;
 
+            if (!string.IsNullOrWhiteSpace(fullName))
+            {
+                string[] names = fullName.Split(new[] { '/' });
+
+                if (names.Length >= 2)
+                {
+                    string owner = names[0];
+                    string name = names[1];
+
+                    GitHubRepo repo = await GitManager.Client.Repository.Get(owner, name);
+
+                    GitRepo.Clone(repo.CloneUrl, "");
+                    MessageBox.Show("CLONE SUCESSFULLY", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+            }
         }
 
         private void xPush_Click(object sender, RoutedEventArgs e)
         {
-
+            
         }
     }
 }
