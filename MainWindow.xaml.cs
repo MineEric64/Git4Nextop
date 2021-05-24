@@ -72,8 +72,8 @@ namespace ProjectGFN
                     string name = names[1];
 
                     GitHubRepo repo = await GitManager.Client.Repository.Get(owner, name);
+                    await GitManager.CloneAsync(repo.CloneUrl, "");
 
-                    GitRepo.Clone(repo.CloneUrl, "");
                     MessageBox.Show("CLONE SUCESSFULLY", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
             }
