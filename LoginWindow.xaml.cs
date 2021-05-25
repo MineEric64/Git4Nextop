@@ -33,14 +33,14 @@ namespace ProjectGFN
         {
             var token = xToken.Password;
 
-            if (string.IsNullOrWhiteSpace(token))
+            if (await GitManager.Initialize(token))
             {
-                MessageBox.Show("Can't login", this.Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                _onLogin(this);
             }
-
-            await GitManager.Initialize(token);
-            _onLogin(this);
+            else
+            {
+                MessageBox.Show("Can't login on GitHub.\nInvalid token", MainWindow.MainTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }

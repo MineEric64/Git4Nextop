@@ -21,17 +21,26 @@ namespace ProjectGFN.Clients
         public static string UserName { get; private set; } = string.Empty;
         public static TokenCredentials Token => new TokenCredentials();
 
-        public static async Task Initialize(string token)
+        public static async Task<bool> Initialize(string token)
         {
-            Client = new GitHubClient(new ProductHeaderValue("Git4Nextop"))
+            try
             {
-                Credentials = new Credentials(token)
-            };
-            Repositories = await GetRepositoriesAsync();
-            UserName = (await GetCurrentUserAsync()).Name;
+                Client = new GitHubClient(new ProductHeaderValue("Git4Nextop"))
+                {
+                    Credentials = new Credentials(token)
+                };
+                Repositories = await GetRepositoriesAsync();
+                UserName = (await GetCurrentUserAsync()).Name;
 
-            Token.Username = UserName;
-            Token.Password = token;
+                Token.Username = UserName;
+                Token.Password = token;
+            }
+            catch
+            {
+                return false;
+            }
+
+            return true;
         }
 
         public static async Task<User> GetCurrentUserAsync()

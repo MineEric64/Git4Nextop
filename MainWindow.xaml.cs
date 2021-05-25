@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using Ookii.Dialogs.Wpf;
 using LibGit2Sharp;
 
 using ProjectGFN.Clients;
@@ -39,7 +40,7 @@ namespace ProjectGFN
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            Action<LoginWindow> onLogin = async (LoginWindow s) =>
+            Action<LoginWindow> onLogin = async s =>
             {
                 s.Close();
                 this.IsEnabled = true;
@@ -50,11 +51,14 @@ namespace ProjectGFN
                 {
                     this.xRepos.Items.Add(item.FullName);
                 }
+
+                MessageBox.Show($"Welcome, {GitManager.UserName}!", MainTitle, MessageBoxButton.OK,
+                    MessageBoxImage.Information);
             };
+
             var login = new LoginWindow(onLogin);
-
-
             login.Show();
+
             this.IsEnabled = false;
         }
 
@@ -64,7 +68,7 @@ namespace ProjectGFN
 
             if (!string.IsNullOrWhiteSpace(fullName))
             {
-                string[] names = fullName.Split(new[] { '/' });
+                string[] names = fullName.Split('/');
 
                 if (names.Length >= 2)
                 {
@@ -72,9 +76,20 @@ namespace ProjectGFN
                     string name = names[1];
 
                     GitHubRepo repo = await GitManager.Client.Repository.Get(owner, name);
-                    await GitManager.CloneAsync(repo.CloneUrl, "");
+                    string path = string.Empty;
 
-                    MessageBox.Show("CLONE SUCESSFULLY", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                    if (MessageBox.Show("Please select the directory where to clone repository.\nWould you like to continue?", MainTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                    {
+                        var dialog = new VistaFolderBrowserDialog();
+
+                        if (dialog.ShowDialog(this).GetValueOrDefault())
+                        {
+                            path = $@"{dialog.SelectedPath}\{name}";
+                            await GitManager.CloneAsync(repo.CloneUrl, path);
+
+                            MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                        }
+                    }
                 }
             }
         }
