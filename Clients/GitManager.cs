@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 using Octokit;
 using LibGit2Sharp;
 
+using ProjectGFN.Others;
+
 using GitHubRepo = Octokit.Repository;
 using Credentials = Octokit.Credentials;
 
 using GitRepo = LibGit2Sharp.Repository;
 using TokenCredentials = LibGit2Sharp.UsernamePasswordCredentials;
+
+using Network = ProjectGFN.Others.Network;
 
 namespace ProjectGFN.Clients
 {
@@ -25,6 +29,11 @@ namespace ProjectGFN.Clients
         {
             try
             {
+                if (!Network.IsAvailable)
+                {
+                    return false;
+                }
+
                 Client = new GitHubClient(new ProductHeaderValue("Git4Nextop"))
                 {
                     Credentials = new Credentials(token)
@@ -53,24 +62,14 @@ namespace ProjectGFN.Clients
             return await Client.Repository.GetAllForCurrent();
         }
 
-        public static void Clone(GitHubRepo repository, string path)
-        {
-            Clone(repository.CloneUrl, path);
-        }
-
         public static void Clone(string url, string path)
         {
             CloneOptions option = new CloneOptions
             {
-                CredentialsProvider = (_url, _user, _cred) => GitManager.Token
+                CredentialsProvider = (_url, _user, _cred) => Token
             };
 
             GitRepo.Clone(url, path, option);
-        }
-
-        public static async Task CloneAsync(GitHubRepo repository, string path)
-        {
-            await Task.Run(() => Clone(repository, path));
         }
 
         public static async Task CloneAsync(string url, string path)

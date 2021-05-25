@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
 using ProjectGFN.Clients;
+using ProjectGFN.Others;
 
 namespace ProjectGFN
 {
@@ -39,7 +40,14 @@ namespace ProjectGFN
             }
             else
             {
-                MessageBox.Show("Can't login on GitHub.\nInvalid token", MainWindow.MainTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                string reason = "Invalid token";
+
+                if (!Network.IsAvailable)
+                {
+                    reason = "Network not available";
+                }
+
+                MessageBox.Show($"Can't login on GitHub.\n{reason}", MainWindow.MainTitle, MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }

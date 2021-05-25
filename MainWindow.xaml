@@ -9,15 +9,9 @@
     <Grid>
         <Button x:Name="xPush" Content="Push" HorizontalAlignment="Left" Margin="167,332,0,0" VerticalAlignment="Top" Width="121" Height="63" Click="xPush_Click"/>
         <Button x:Name="xPull" Content="Pull" HorizontalAlignment="Left" Margin="486,270,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
-        <ListView x:Name="xRepos" HorizontalAlignment="Left" Height="285" Margin="20,21,0,0" VerticalAlignment="Top" Width="121">
-            <ListView.View>
-                <GridView>
-                    <GridViewColumn/>
-                </GridView>
-            </ListView.View>
-        </ListView>
         <Button x:Name="xClone" Content="Clone" HorizontalAlignment="Left" Margin="20,332,0,0" VerticalAlignment="Top" Width="121" Height="63" Click="xClone_Click"/>
         <Button x:Name="xFetch" Content="Fetch" HorizontalAlignment="Left" Margin="343,270,0,0" VerticalAlignment="Top" Width="121" Height="63"/>
+        <TreeView x:Name="xRepos" HorizontalAlignment="Left" Height="289" Margin="20,25,0,0" VerticalAlignment="Top" Width="121"/>
 
     </Grid>
 </Window>
