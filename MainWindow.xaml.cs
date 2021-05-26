@@ -19,6 +19,8 @@ using LibGit2Sharp;
 
 using ProjectGFN.Clients;
 using ProjectGFN.Extensions;
+using ProjectGFN.Windows;
+using ProjectGFN.Windows.Git;
 
 using GitHubRepo = Octokit.Repository;
 using GitRepo = LibGit2Sharp.Repository;
@@ -43,6 +45,11 @@ namespace ProjectGFN
         {
             Action<LoginWindow> onLogin = async s =>
             {
+                void Initialize()
+                {
+                    xRepo.Content = $"{GitManager.UserName}/\n";
+                }
+
                 s.Close();
                 this.IsEnabled = true;
 
@@ -64,26 +71,8 @@ namespace ProjectGFN
                     }
                 }
 
-                foreach (var key in repoMap.Keys)
-                {
-                    var parent = new TreeViewItem
-                    {
-                        Header = key
-                    };
-
-                    foreach (var repoName in repoMap[key])
-                    {
-                        var item = new TreeViewItem
-                        {
-                            Header = repoName,
-                            Tag = key
-                        };
-
-                        parent.Items.Add(item);
-                    }
-
-                    xRepos.Items.Add(parent);
-                }
+                RepoWindow.Initialize(repoMap);
+                Initialize();
 
                 MessageBox.Show($"Welcome, {GitManager.UserName}!", MainTitle, MessageBoxButton.OK,
                     MessageBoxImage.Information);
@@ -95,13 +84,10 @@ namespace ProjectGFN
             this.IsEnabled = false;
         }
 
-        private async void xClone_Click(object sender, RoutedEventArgs e)
+        private void xClone_Click(object sender, RoutedEventArgs e)
         {
-            if (xRepos.SelectedItem is TreeViewItem item)
+            Action<string, string> onSelected = async (owner, name) =>
             {
-                string owner = item.Tag as string;
-                string name = item.Header as string;
-
                 if (string.IsNullOrWhiteSpace(owner) || string.IsNullOrWhiteSpace(name))
                 {
                     return;
@@ -110,7 +96,9 @@ namespace ProjectGFN
                 GitHubRepo repo = await GitManager.Client.Repository.Get(owner, name);
                 string path = string.Empty;
 
-                if (MessageBox.Show("Please select the directory where to clone repository.\nWould you like to continue?", MainTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show(
+                    "Please select the directory where to clone repository.\nWould you like to continue?",
+                    MainTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     var dialog = new VistaFolderBrowserDialog();
 
@@ -119,15 +107,31 @@ namespace ProjectGFN
                         path = $@"{dialog.SelectedPath}\{name}";
                         await repo.CloneAsync(path);
 
-                        MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                        MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK,
+                            MessageBoxImage.Information);
                     }
                 }
-            }
+            };
+
+            var repoWindow = new RepoWindow(onSelected);
+            repoWindow.Show();
         }
 
         private void xPush_Click(object sender, RoutedEventArgs e)
         {
             
+        }
+
+        private void xRepo_Click(object sender, RoutedEventArgs e)
+        {
+            Action<string, string> onSelected = async (owner, name) =>
+            {
+                await RepositoryManager.Initialize(owner, name);
+                xRepo.Content = $"{owner}/\n{name}";
+            };
+
+            var repoWindow = new RepoWindow(onSelected);
+            repoWindow.Show();
         }
     }
 }
