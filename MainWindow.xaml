@@ -7,16 +7,20 @@
         mc:Ignorable="d"
         Title="Git4Nextop" Height="450" Width="800">
     <Grid>
-        <Button x:Name="xClone" Content="Clone" HorizontalAlignment="Left" Margin="20,332,0,0" VerticalAlignment="Top" Width="121" Height="63" Click="xClone_Click"/>
-        <TabControl HorizontalAlignment="Left" Height="240" Margin="197,25,0,0" VerticalAlignment="Top" Width="498">
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
+        <TabControl HorizontalAlignment="Left" Height="390" Margin="10,10,0,0" VerticalAlignment="Top" Width="763">
+            <TabItem Header="Menu">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="xClone" Content="Clone..." HorizontalAlignment="Left" Margin="114,132,0,0" VerticalAlignment="Top" Width="75" Click="xClone_Click"/>
+                    <Button x:Name="xAdd" Content="Add..." HorizontalAlignment="Left" Margin="114,166,0,0" VerticalAlignment="Top" Width="75" Click="xAdd_Click"/>
+                    <Button x:Name="xCreate" Content="Create..." HorizontalAlignment="Left" Margin="114,200,0,0" VerticalAlignment="Top" Width="75" Click="xCreate_Click"/>
+                </Grid>
             </TabItem>
-            <TabItem Header="TabItem">
-                <Grid Background="#FFE5E5E5"/>
+            <TabItem Header="Repository">
+                <Grid Background="#FFE5E5E5">
+                    <Button x:Name="xRepo" Content="Select repository" HorizontalAlignment="Left" Margin="16,15,0,0" VerticalAlignment="Top" Width="121" Height="63" Click="xRepo_Click"/>
+                </Grid>
             </TabItem>
         </TabControl>
-        <Button x:Name="xRepo" Content="Select repository" HorizontalAlignment="Left" Margin="20,25,0,0" VerticalAlignment="Top" Width="121" Height="63" Click="xRepo_Click"/>
 
     </Grid>
 </Window>

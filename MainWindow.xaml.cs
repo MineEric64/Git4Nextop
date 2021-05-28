@@ -84,9 +84,9 @@ namespace ProjectGFN
             this.IsEnabled = false;
         }
 
-        private void xClone_Click(object sender, RoutedEventArgs e)
+        public void CloneFromOtherRepository()
         {
-            Action<string, string> onSelected = async (owner, name) =>
+            async void OnSelected(string owner, string name)
             {
                 if (string.IsNullOrWhiteSpace(owner) || string.IsNullOrWhiteSpace(name))
                 {
@@ -96,9 +96,7 @@ namespace ProjectGFN
                 GitHubRepo repo = await GitManager.Client.Repository.Get(owner, name);
                 string path = string.Empty;
 
-                if (MessageBox.Show(
-                    "Please select the directory where to clone repository.\nWould you like to continue?",
-                    MainTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+                if (MessageBox.Show("Please select the directory where to clone repository.\nWould you like to continue?", MainTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
                 {
                     var dialog = new VistaFolderBrowserDialog();
 
@@ -107,13 +105,12 @@ namespace ProjectGFN
                         path = $@"{dialog.SelectedPath}\{name}";
                         await repo.CloneAsync(path);
 
-                        MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK,
-                            MessageBoxImage.Information);
+                        MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
                     }
                 }
-            };
+            }
 
-            var repoWindow = new RepoWindow(onSelected);
+            var repoWindow = new RepoWindow(OnSelected);
             repoWindow.Show();
         }
 
@@ -132,6 +129,21 @@ namespace ProjectGFN
 
             var repoWindow = new RepoWindow(onSelected);
             repoWindow.Show();
+        }
+
+        private void xClone_Click(object sender, RoutedEventArgs e)
+        {
+            CloneFromOtherRepository();
+        }
+
+        private void xAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void xCreate_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
