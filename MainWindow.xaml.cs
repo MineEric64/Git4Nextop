@@ -21,9 +21,12 @@ using ProjectGFN.Clients;
 using ProjectGFN.Extensions;
 using ProjectGFN.Windows;
 using ProjectGFN.Windows.Git;
+using ProjectGFN.Properties;
 
 using GitHubRepo = Octokit.Repository;
 using GitRepo = LibGit2Sharp.Repository;
+
+using Res = ProjectGFN.Properties.Resources;
 
 namespace ProjectGFN
 {
@@ -43,9 +46,16 @@ namespace ProjectGFN
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
+            void InitializeBef()
+            {
+                xIcon.Source = BitmapConverter.FromBitmap(Res.Git4Nextop);
+            }
+
+            InitializeBef();
+
             Action<LoginWindow> onLogin = async s =>
             {
-                void Initialize()
+                void InitializeAf()
                 {
                     xRepo.Content = $"{GitManager.UserName}/\n";
                 }
@@ -72,7 +82,7 @@ namespace ProjectGFN
                 }
 
                 RepoWindow.Initialize(repoMap);
-                Initialize();
+                InitializeAf();
 
                 MessageBox.Show($"Welcome, {GitManager.UserName}!", MainTitle, MessageBoxButton.OK,
                     MessageBoxImage.Information);

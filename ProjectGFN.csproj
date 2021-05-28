@@ -87,6 +87,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Clients\RepositoryManager.cs" />
+    <Compile Include="Extensions\BitmapConverter.cs" />
     <Compile Include="Windows\About.xaml.cs">
       <DependentUpon>About.xaml</DependentUpon>
     </Compile>
@@ -126,10 +127,15 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Resource Include="Fonts\NanumBarunGothic.ttf" />
-    <Resource Include="Fonts\NanumBarunGothicBold.ttf" />
-    <Resource Include="Fonts\NanumBarunGothicLight.ttf" />
-    <Resource Include="Fonts\NanumBarunGothicUltraLight.ttf" />
+    <Resource Include="Fonts\Nanum\NanumBarunGothic.ttf" />
+    <Resource Include="Fonts\Nanum\NanumBarunGothicBold.ttf" />
+    <Resource Include="Fonts\Nanum\NanumBarunGothicLight.ttf" />
+    <Resource Include="Fonts\Nanum\NanumBarunGothicUltraLight.ttf" />
+    <Resource Include="Fonts\AdobeClean\AdobeClean-Bold.otf" />
+    <Resource Include="Fonts\AdobeClean\AdobeClean-BoldSemiCn.otf" />
+    <Resource Include="Fonts\AdobeClean\AdobeClean-Light.otf" />
+    <Resource Include="Fonts\AdobeClean\AdobeClean-Regular.otf" />
+    <Resource Include="Fonts\AdobeClean\AdobeClean-SemiCn.otf" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -138,6 +144,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Git4Nextop.png" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

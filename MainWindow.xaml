@@ -9,10 +9,18 @@
     <Grid>
         <TabControl HorizontalAlignment="Left" Height="390" Margin="10,10,0,0" VerticalAlignment="Top" Width="763">
             <TabItem Header="Menu">
-                <Grid Background="#FFE5E5E5">
-                    <Button x:Name="xClone" Content="Clone..." HorizontalAlignment="Left" Margin="114,132,0,0" VerticalAlignment="Top" Width="75" Click="xClone_Click"/>
-                    <Button x:Name="xAdd" Content="Add..." HorizontalAlignment="Left" Margin="114,166,0,0" VerticalAlignment="Top" Width="75" Click="xAdd_Click"/>
-                    <Button x:Name="xCreate" Content="Create..." HorizontalAlignment="Left" Margin="114,200,0,0" VerticalAlignment="Top" Width="75" Click="xCreate_Click"/>
+                <Grid>
+                    <Grid.Background>
+                        <RadialGradientBrush>
+                            <GradientStop Color="#FFF7F7F7" Offset="1"/>
+                            <GradientStop Color="White"/>
+                        </RadialGradientBrush>
+                    </Grid.Background>
+                    <Button x:Name="xClone" Content="Clone..." HorizontalAlignment="Left" Margin="58,141,0,0" VerticalAlignment="Top" Width="132" Click="xClone_Click" Height="28"/>
+                    <Button x:Name="xAdd" Content="Add..." HorizontalAlignment="Left" Margin="58,188,0,0" VerticalAlignment="Top" Width="132" Click="xAdd_Click" Height="27"/>
+                    <Button x:Name="xCreate" Content="Create..." HorizontalAlignment="Left" Margin="58,235,0,0" VerticalAlignment="Top" Width="132" Click="xCreate_Click" Height="27"/>
+                    <Image x:Name="xIcon" HorizontalAlignment="Left" Height="200" Margin="230,70,0,0" VerticalAlignment="Top" Width="200" Source="pack://siteoforigin:,,,/Resources/Git4Nextop.png"/>
+                    <Label Content="Git4Nextop" HorizontalAlignment="Left" Margin="454,205,0,0" VerticalAlignment="Top" FontFamily="/ProjectGFN;component/Fonts/Nanum/#NanumBarunGothic Light" FontSize="48" FontWeight="Bold"/>
                 </Grid>
             </TabItem>
             <TabItem Header="Repository">
