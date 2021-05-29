@@ -19,15 +19,16 @@ namespace ProjectGFN.Windows.Git
     /// </summary>
     public partial class RepoWindow : Window
     {
-        public static Dictionary<string, List<string>> RepoMap;
-        private Action<string, string> _onSelected;
+        public static Dictionary<string, List<string>> RepoMap = new Dictionary<string, List<string>>();
 
-        public RepoWindow(Action<string, string> onSelected)
+        public event EventHandler<RepoEventArgs> Selected;
+        public bool AutoClose { get; set; } = true;
+
+        public RepoWindow()
         {
             InitializeComponent();
 
             this.Loaded += RepoWindow_Loaded;
-            _onSelected = onSelected;
         }
 
         public static void Initialize(Dictionary<string, List<string>> repoMap)
@@ -66,14 +67,30 @@ namespace ProjectGFN.Windows.Git
                 string owner = item.Tag as string;
                 string name = item.Header as string;
 
-                _onSelected?.Invoke(owner, name);
-                this.Close();
+                Selected?.Invoke(this, new RepoEventArgs(owner, name));
+
+                if (AutoClose)
+                {
+                    this.Close();
+                }
             }
             else
             {
                 MessageBox.Show("You didn't select any repository.", MainWindow.MainTitle, MessageBoxButton.OK,
                     MessageBoxImage.Warning);
             }
+        }
+    }
+
+    public class RepoEventArgs
+    {
+        public string Owner { get; set; }
+        public string Name { get; set; }
+
+        public RepoEventArgs(string owner, string name)
+        {
+            Owner = owner;
+            Name = name;
         }
     }
 }

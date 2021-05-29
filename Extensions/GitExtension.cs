@@ -12,14 +12,14 @@ namespace ProjectGFN.Extensions
 {
     public static class GitExtension
     {
-        public static void Clone(this GitHubRepo repo, string path)
+        public static void Clone(this GitHubRepo repo, string branchName, string path)
         {
-            GitManager.Clone(repo.CloneUrl, path);
+            GitManager.Clone(repo.CloneUrl, branchName, path);
         }
 
-        public static async Task CloneAsync(this GitHubRepo repo, string path)
+        public static async Task CloneAsync(this GitHubRepo repo, string branchName, string path)
         {
-            await Task.Run(() => GitManager.CloneAsync(repo.CloneUrl, path));
+            await Task.Run(() => GitManager.Clone(repo.CloneUrl, branchName, path));
         }
     }
 }

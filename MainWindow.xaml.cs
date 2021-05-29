@@ -49,11 +49,12 @@ namespace ProjectGFN
             void InitializeBef()
             {
                 xIcon.Source = BitmapConverter.FromBitmap(Res.Git4Nextop);
+                xRepositoryGrid.IsEnabled = false;
             }
 
             InitializeBef();
 
-            Action<LoginWindow> onLogin = async s =>
+            async void OnLogin(LoginWindow s)
             {
                 void InitializeAf()
                 {
@@ -84,44 +85,57 @@ namespace ProjectGFN
                 RepoWindow.Initialize(repoMap);
                 InitializeAf();
 
-                MessageBox.Show($"Welcome, {GitManager.UserName}!", MainTitle, MessageBoxButton.OK,
-                    MessageBoxImage.Information);
-            };
+                MessageBox.Show($"Welcome, {GitManager.UserName}!", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+            }
 
-            var login = new LoginWindow(onLogin);
+            var login = new LoginWindow(OnLogin);
             login.Show();
 
             this.IsEnabled = false;
         }
 
-        public void CloneFromOtherRepository()
+        public void Clone()
         {
-            async void OnSelected(string owner, string name)
+            async void OnSelected(object sender, RepoEventArgs e)
             {
-                if (string.IsNullOrWhiteSpace(owner) || string.IsNullOrWhiteSpace(name))
-                {
-                    return;
-                }
-
-                GitHubRepo repo = await GitManager.Client.Repository.Get(owner, name);
-                string path = string.Empty;
-
-                if (MessageBox.Show("Please select the directory where to clone repository.\nWould you like to continue?", MainTitle, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-                {
-                    var dialog = new VistaFolderBrowserDialog();
-
-                    if (dialog.ShowDialog(this).GetValueOrDefault())
-                    {
-                        path = $@"{dialog.SelectedPath}\{name}";
-                        await repo.CloneAsync(path);
-
-                        MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
-                    }
-                }
+                GitHubRepo repo = await GitManager.Client.Repository.Get(e.Owner, e.Name);
+                await CloneAsync(repo);
             }
 
-            var repoWindow = new RepoWindow(OnSelected);
+            var repoWindow = new RepoWindow();
+            repoWindow.Selected += OnSelected;
+
             repoWindow.Show();
+        }
+
+        public async Task CloneAsync(GitHubRepo repo)
+        {
+            async void OnSelected(object sender, CloneEventArgs e)
+            {
+                await CloneAsync(repo, e.BranchName, e.Path);
+            }
+
+            var cloneWindow = new CloneWindow();
+
+            await cloneWindow.InitializeAsync(repo);
+            cloneWindow.Selected += OnSelected;
+
+            cloneWindow.Show();
+        }
+
+        public async Task CloneAsync(GitHubRepo repo, string branchName, string path)
+        {
+            RepositoryManager.RepositoryPath = path;
+
+            await repo.CloneAsync(branchName, RepositoryManager.RepositoryPath);
+            await SelectRepository(repo, branchName);
+
+            if (!xRepositoryGrid.IsEnabled)
+            {
+                xRepositoryGrid.IsEnabled = true;
+            }
+
+            MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         private void xPush_Click(object sender, RoutedEventArgs e)
@@ -131,19 +145,35 @@ namespace ProjectGFN
 
         private void xRepo_Click(object sender, RoutedEventArgs e)
         {
-            Action<string, string> onSelected = async (owner, name) =>
+            async void OnSelected(object s, RepoEventArgs re)
             {
-                await RepositoryManager.Initialize(owner, name);
-                xRepo.Content = $"{owner}/\n{name}";
-            };
+                await SelectRepository(re.Owner, re.Name);
+            }
 
-            var repoWindow = new RepoWindow(onSelected);
+            var repoWindow = new RepoWindow();
+            repoWindow.Selected += OnSelected;
+
             repoWindow.Show();
+        }
+
+        public async Task SelectRepository(GitHubRepo repo, string branchName)
+        {
+            await RepositoryManager.InitializeRepositoryAsync(repo, branchName);
+            RepositoryManager.LocalRepository = new GitRepo(RepositoryManager.RepositoryPath);
+
+            xRepo.Content = $"{RepositoryManager.OwnerName}/\n{RepositoryManager.Repository.Name}";
+            xBranch.Content = $"Current Branch\n'{repo.DefaultBranch}'";
+        }
+
+        public async Task SelectRepository(string owner, string name)
+        {
+            var repo = await RepositoryManager.GetRepositoryAsync(owner, name);
+            await SelectRepository(repo, repo.DefaultBranch);
         }
 
         private void xClone_Click(object sender, RoutedEventArgs e)
         {
-            CloneFromOtherRepository();
+            Clone();
         }
 
         private void xAdd_Click(object sender, RoutedEventArgs e)
@@ -152,6 +182,11 @@ namespace ProjectGFN
         }
 
         private void xCreate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void xInteraction_Click(object sender, RoutedEventArgs e)
         {
 
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 using Octokit;
@@ -62,19 +63,25 @@ namespace ProjectGFN.Clients
             return await Client.Repository.GetAllForCurrent();
         }
 
-        public static void Clone(string url, string path)
+        public static void Clone(string url, string branchName, string path)
         {
             CloneOptions option = new CloneOptions
             {
-                CredentialsProvider = (_url, _user, _cred) => Token
+                CredentialsProvider = (_url, _user, _cred) => Token,
+                BranchName = branchName
             };
+
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
 
             GitRepo.Clone(url, path, option);
         }
 
-        public static async Task CloneAsync(string url, string path)
+        public static async Task CloneAsync(string url, string branchName, string path)
         {
-            await Task.Run(() => Clone(url, path));
+            await Task.Run(() => Clone(url, branchName, path));
         }
     }
 }
