@@ -37,6 +37,9 @@ namespace ProjectGFN
     {
         public const string MainTitle = "Git4Nextop";
 
+        public GitRepoMode RepoMode { get; set; } = GitRepoMode.None;
+        public Commit CurrentCommit { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -58,7 +61,7 @@ namespace ProjectGFN
             {
                 void InitializeAf()
                 {
-                    xRepo.Content = $"{GitManager.UserName}/\n";
+                    xRepo.Content = $"{GitManager.User.Name}/\n";
                 }
 
                 s.Close();
@@ -85,7 +88,7 @@ namespace ProjectGFN
                 RepoWindow.Initialize(repoMap);
                 InitializeAf();
 
-                MessageBox.Show($"Welcome, {GitManager.UserName}!", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
+                MessageBox.Show($"Welcome, {GitManager.User.Name}!", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
             }
 
             var login = new LoginWindow(OnLogin);
@@ -138,9 +141,25 @@ namespace ProjectGFN
             MessageBox.Show("Cloned the repository successfully.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void xPush_Click(object sender, RoutedEventArgs e)
+        public void AddAll()
         {
-            
+            Commands.Stage(RepositoryManager.LocalRepository, "*");
+        }
+
+        public void Commit(string description)
+        {
+            Signature author = new Signature(GitManager.User.Name, GitManager.User.Email, DateTime.Now);
+            CurrentCommit = RepositoryManager.LocalRepository.Commit(description, author, author);
+        }
+
+        public void Push()
+        {
+            PushOptions options = new PushOptions()
+            {
+                CredentialsProvider = (url, usernameFromUrl, types) => GitManager.Token
+            };
+
+            RepositoryManager.LocalRepository.Network.Push(RepositoryManager.LocalRepository.Head, options);
         }
 
         private void xRepo_Click(object sender, RoutedEventArgs e)
@@ -171,14 +190,41 @@ namespace ProjectGFN
             await SelectRepository(repo, repo.DefaultBranch);
         }
 
+        public async Task SelectRepository(GitRepo repo)
+        {
+            var str = repo.Network.Remotes["origin"].Url.Replace("https://github.com/", string.Empty).Replace(".git", string.Empty).Split('/');
+            
+            if (str.Length >= 2)
+            {
+                var owner = str[0];
+                var name = str[1];
+
+                var gitHubRepo = await RepositoryManager.GetRepositoryAsync(owner, name);
+                await RepositoryManager.InitializeRepositoryAsync(gitHubRepo, repo.Head.FriendlyName);
+                RepositoryManager.LocalRepository = repo;
+                RepositoryManager.OwnRepositories.Add(repo);
+
+                xRepo.Content = $"{RepositoryManager.OwnerName}/\n{RepositoryManager.Repository.Name}";
+                xBranch.Content = $"Current Branch\n'{RepositoryManager.BranchDefaultName}'";
+            }
+        }
+
         private void xClone_Click(object sender, RoutedEventArgs e)
         {
             Clone();
         }
 
-        private void xAdd_Click(object sender, RoutedEventArgs e)
+        private async void xAdd_Click(object sender, RoutedEventArgs e)
         {
+            MessageBox.Show("Please select your local repository.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Information);
 
+            var dialog = new VistaFolderBrowserDialog();
+
+            if (dialog.ShowDialog(this).GetValueOrDefault())
+            {
+                var repo = new GitRepo(dialog.SelectedPath);
+                await SelectRepository(repo);
+            }
         }
 
         private void xCreate_Click(object sender, RoutedEventArgs e)
@@ -186,9 +232,58 @@ namespace ProjectGFN
 
         }
 
-        private void xInteraction_Click(object sender, RoutedEventArgs e)
+        private async void xInteraction_Click(object sender, RoutedEventArgs e)
         {
+            switch (RepoMode)
+            {
+                case GitRepoMode.Clone:
+                    await CloneAsync(RepositoryManager.Repository);
 
+                    xInteraction.Content = "Commit";
+                    RepoMode = GitRepoMode.Commit;
+                    break;
+
+                case GitRepoMode.Commit:
+                    if (string.IsNullOrWhiteSpace(xDescription.Text))
+                    {
+                        MessageBox.Show("Please write the commit content first.", MainTitle, MessageBoxButton.OK, MessageBoxImage.Warning);
+                        break;
+                    }
+
+                    if (true)
+                    {
+                        Commit(xDescription.Text);
+
+                        xInteraction.Content = "Push";
+                        RepoMode = GitRepoMode.Push;
+                    }
+                    else //Commit&Push
+                    {
+                        Commit(xDescription.Text);
+                        Push();
+
+                        xInteraction.Content = "Fetch";
+                        RepoMode = GitRepoMode.Fetch;
+                    }
+                    break;
+
+                case GitRepoMode.Push:
+                    Push();
+
+                    xInteraction.Content = "Fetch";
+                    RepoMode = GitRepoMode.Fetch;
+                    break;
+
+                case GitRepoMode.Pull:
+                    break;
+
+                case GitRepoMode.Fetch:
+
+                    break;
+
+                default:
+                    break;
+            }
         }
     }
 }

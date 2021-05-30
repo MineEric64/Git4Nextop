@@ -32,9 +32,8 @@
                         </RadialGradientBrush>
                     </Grid.Background>
                     <Button x:Name="xRepo" Content="Select repository" HorizontalAlignment="Left" Margin="16,15,0,0" VerticalAlignment="Top" Width="121" Height="63" Click="xRepo_Click"/>
-                    <TextBox HorizontalAlignment="Left" Height="188" Margin="16,154,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="121"/>
-                    <TextBox HorizontalAlignment="Left" Height="22" Margin="16,118,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="121"/>
-                    <Button x:Name="xInteraction" Content="Interaction!" HorizontalAlignment="Left" Margin="473,15,0,0" VerticalAlignment="Top" Width="255" Height="63" Click="xInteraction_Click"/>
+                    <TextBox x:Name="xDescription" HorizontalAlignment="Left" Height="208" Margin="16,134,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="121"/>
+                    <Button x:Name="xInteraction" Content="Clone" HorizontalAlignment="Left" Margin="473,15,0,0" VerticalAlignment="Top" Width="255" Height="63" Click="xInteraction_Click"/>
                     <Button x:Name="xBranch" Content="Current Branch" HorizontalAlignment="Left" Margin="176,15,0,0" VerticalAlignment="Top" Width="267" Height="63" IsEnabled="False" HorizontalContentAlignment="Center"/>
                 </Grid>
             </TabItem>

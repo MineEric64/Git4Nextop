@@ -14,6 +14,7 @@ namespace ProjectGFN.Clients
 
         public static GitHubRepo Repository { get; private set; }
         public static GitRepo LocalRepository { get; set; }
+        public static List<GitRepo> OwnRepositories { get; set; } = new List<GitRepo>();
 
         public static string BranchDefaultName { get; private set; } = string.Empty;
         public static Branch BranchDefault { get; private set; }
