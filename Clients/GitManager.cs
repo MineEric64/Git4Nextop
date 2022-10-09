@@ -24,7 +24,7 @@ namespace ProjectGFN.Clients
         public static IReadOnlyList<GitHubRepo> Repositories { get; private set; }
 
         public static User User { get; private set; }
-        public static TokenCredentials Token => new TokenCredentials();
+        public static TokenCredentials Token { get; private set; } = new TokenCredentials();
 
         public static async Task<bool> Initialize(string token)
         {
@@ -42,8 +42,11 @@ namespace ProjectGFN.Clients
                 Repositories = await GetRepositoriesAsync();
                 User = await GetCurrentUserAsync();
 
-                Token.Username = User.Name;
-                Token.Password = token;
+                Token = new TokenCredentials()
+                {
+                    Username = User.Name,
+                    Password = token
+                };
             }
             catch
             {

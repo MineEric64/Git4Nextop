@@ -5,10 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjectGFN"
         mc:Ignorable="d"
-        Title="LoginWindow" Height="135.6" Width="188">
+        Title="LoginWindow" Height="212" Width="288">
     <Grid>
-        <Button x:Name="xLogin" Content="Login" HorizontalAlignment="Left" Margin="31,56,0,0" VerticalAlignment="Top" Width="120" Click="xLogin_Click"/>
-        <PasswordBox x:Name="xToken" HorizontalAlignment="Left" Margin="31,33,0,0" VerticalAlignment="Top" Width="120" PasswordChar="*"/>
-
+        <Button x:Name="xLogin" Content="Login" HorizontalAlignment="Left" Margin="31,127,0,0" VerticalAlignment="Top" Width="213" Click="xLogin_Click"/>
+        <PasswordBox x:Name="xToken" HorizontalAlignment="Left" Margin="31,33,0,0" VerticalAlignment="Top" Width="213" PasswordChar="*"/>
+        <PasswordBox x:Name="xPassword" HorizontalAlignment="Left" Margin="31,63,0,0" VerticalAlignment="Top" Width="213" PasswordChar="*" IsEnabled="False"/>
+        <CheckBox x:Name="xPasswordCheck" Content="Has Password" HorizontalAlignment="Left" Margin="31,107,0,0" VerticalAlignment="Top" Checked="xPasswordCheck_Checked"/>
     </Grid>
 </Window>

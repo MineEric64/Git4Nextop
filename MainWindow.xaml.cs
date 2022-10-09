@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,6 +28,7 @@ using GitHubRepo = Octokit.Repository;
 using GitRepo = LibGit2Sharp.Repository;
 
 using Res = ProjectGFN.Properties.Resources;
+using Path = System.IO.Path;
 
 namespace ProjectGFN
 {
@@ -45,6 +47,7 @@ namespace ProjectGFN
             InitializeComponent();
 
             this.Loaded += MainWindow_Loaded;
+            AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -95,6 +98,12 @@ namespace ProjectGFN
             login.Show();
 
             this.IsEnabled = false;
+        }
+
+        private void OnUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            var ex = (Exception)e.ExceptionObject;
+            MessageBox.Show(string.Concat("Error occured!", Environment.NewLine, Environment.NewLine, ex.ToString()), "Git4Nextop", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         public void Clone()
@@ -148,6 +157,11 @@ namespace ProjectGFN
 
         public void Commit(string description)
         {
+            if (GitManager.User.Email == null)
+            {
+                throw new ArgumentNullException("User's email is null");
+            }
+
             Signature author = new Signature(GitManager.User.Name, GitManager.User.Email, DateTime.Now);
             CurrentCommit = RepositoryManager.LocalRepository.Commit(description, author, author);
         }
@@ -283,6 +297,28 @@ namespace ProjectGFN
 
                 default:
                     break;
+            }
+        }
+
+        private void xbApply_Click(object sender, RoutedEventArgs e)
+        {
+            if (RepositoryManager.Repository == null)
+            {
+                MessageBox.Show("Repository is null");
+                return;
+            }
+
+            try
+            {
+                File.WriteAllText(Path.Combine(RepositoryManager.RepositoryPath, "README.md"), xbText.Text);
+                AddAll();
+                Commit("test : " + xbText.Text);
+                Push();
+                MessageBox.Show("Pushed!");
+            }
+            catch (EmptyCommitException ex)
+            {
+                MessageBox.Show("Empty Commit");
             }
         }
     }

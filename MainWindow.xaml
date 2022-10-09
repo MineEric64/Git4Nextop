@@ -37,6 +37,18 @@
                     <Button x:Name="xBranch" Content="Current Branch" HorizontalAlignment="Left" Margin="176,15,0,0" VerticalAlignment="Top" Width="267" Height="63" IsEnabled="False" HorizontalContentAlignment="Center"/>
                 </Grid>
             </TabItem>
+            <TabItem Header="Boj4Nextop" Margin="-2,-2,-2,0">
+                <Grid x:Name="xRepositoryGrid1">
+                    <Grid.Background>
+                        <RadialGradientBrush>
+                            <GradientStop Color="White"/>
+                            <GradientStop Color="#FFF7F7F7" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Grid.Background>
+                    <TextBox x:Name="xbText" HorizontalAlignment="Left" Margin="73,99,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="120"/>
+                    <Button x:Name="xbApply" Content="Apply" HorizontalAlignment="Left" Margin="73,128,0,0" VerticalAlignment="Top" Width="120" Click="xbApply_Click"/>
+                </Grid>
+            </TabItem>
         </TabControl>
 
     </Grid>
