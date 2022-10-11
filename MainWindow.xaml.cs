@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using Ookii.Dialogs.Wpf;
 using LibGit2Sharp;
 
+using ProjectGFN.Boj4Nextop;
 using ProjectGFN.Clients;
 using ProjectGFN.Extensions;
 using ProjectGFN.Windows;
@@ -29,6 +30,7 @@ using GitRepo = LibGit2Sharp.Repository;
 
 using Res = ProjectGFN.Properties.Resources;
 using Path = System.IO.Path;
+
 
 namespace ProjectGFN
 {
@@ -307,6 +309,11 @@ namespace ProjectGFN
                 MessageBox.Show("Repository is null");
                 return;
             }
+
+            string raw = File.ReadAllText(Path.Combine(RepositoryManager.RepositoryPath, "README.md"));
+            List<Baekjoon> bojList = BojManager.ReadMarkdown(raw);
+
+            return;
 
             try
             {

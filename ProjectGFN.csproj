@@ -93,6 +93,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Compile Include="Boj4Nextop\Baekjoon.cs" />
+    <Compile Include="Boj4Nextop\BojManager.cs" />
+    <Compile Include="Boj4Nextop\ReadType.cs" />
     <Compile Include="Clients\GitRepoMode.cs" />
     <Compile Include="Clients\RepositoryManager.cs" />
     <Compile Include="Extensions\BitmapConverter.cs" />

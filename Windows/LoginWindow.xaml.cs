@@ -40,10 +40,18 @@ namespace ProjectGFN
 
             if (xPasswordCheck.IsChecked.HasValue && xPasswordCheck.IsChecked.Value && !string.IsNullOrWhiteSpace(password))
             {
-                var buffer = Convert.FromBase64String(token);
-                var aes = GetCryptoAes(password);
+                try
+                {
+                    var buffer = Convert.FromBase64String(token);
+                    var aes = GetCryptoAes(password);
 
-                token = aes.DecryptToString(buffer);
+                    token = aes.DecryptToString(buffer);
+                }
+                catch (CryptographicException ex)
+                {
+                    MessageBox.Show("Can't login on GitHub.\nPassword decryption failed!", MainWindow.MainTitle, MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
 
             if (await GitManager.Initialize(token))
