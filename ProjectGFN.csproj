@@ -95,6 +95,7 @@
     </Page>
     <Compile Include="Boj4Nextop\Baekjoon.cs" />
     <Compile Include="Boj4Nextop\BojManager.cs" />
+    <Compile Include="Boj4Nextop\README.cs" />
     <Compile Include="Boj4Nextop\ReadType.cs" />
     <Compile Include="Clients\GitRepoMode.cs" />
     <Compile Include="Clients\RepositoryManager.cs" />

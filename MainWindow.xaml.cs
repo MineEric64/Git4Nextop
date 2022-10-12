@@ -311,7 +311,7 @@ namespace ProjectGFN
             }
 
             string raw = File.ReadAllText(Path.Combine(RepositoryManager.RepositoryPath, "README.md"));
-            List<Baekjoon> bojList = BojManager.ReadMarkdown(raw);
+            README readme = BojManager.ReadMarkdown(raw);
 
             return;
 

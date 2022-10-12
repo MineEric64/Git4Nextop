@@ -8,19 +8,19 @@ namespace ProjectGFN.Boj4Nextop
 {
     public class BojManager
     {
-        public static List<Baekjoon> ReadMarkdown(string raw)
+        public static README ReadMarkdown(string raw)
         {
-            List<Baekjoon> bojList = new List<Baekjoon>();
+            README readme = new README();
             Baekjoon boj = new Baekjoon();
             string[] lines = raw.Split(new string[1] { "\r\n" }, StringSplitOptions.None);
 
             foreach (string line in lines)
             {
-                if (line.StartsWith("#"))
+                if (line.StartsWith("#")) //Big Title
                 {
                     if (!boj.IsEmpty)
                     {
-                        bojList.Add(boj);
+                        readme.Contents.Add(boj);
                         boj = new Baekjoon();
                     }
 
@@ -36,14 +36,14 @@ namespace ProjectGFN.Boj4Nextop
                         boj.AddExtra(line);
                     }
                 }
-                else if (line.StartsWith("|"))
+                else if (line.StartsWith("|")) //Title & Contents
                 {
-                    if (boj.Titles.Count == 0)
+                    if (boj.Titles.Count == 0) //Title
                     {
                         string[] titles = line.Split('|');
                         boj.AddTitles(titles);
                     }
-                    else
+                    else //Contents
                     {
                         if (line.StartsWith("|:---:|")) continue;
 
@@ -56,9 +56,9 @@ namespace ProjectGFN.Boj4Nextop
                     boj.AddExtra(line);
                 }
             }
-            bojList.Add(boj);
+            readme.Contents.Add(boj);
 
-            return bojList;
+            return readme;
         }
     }
 }

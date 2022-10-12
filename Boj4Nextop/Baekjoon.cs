@@ -30,6 +30,8 @@ namespace ProjectGFN.Boj4Nextop
 
         public void AddTitles(ICollection<string> titles)
         {
+            if (titles.Contains("주제") && titles.Contains("마지막 수정 날짜")) Read = ReadType.Topic;
+
             foreach (var title in titles)
             {
                 if (string.IsNullOrWhiteSpace(title)) continue;

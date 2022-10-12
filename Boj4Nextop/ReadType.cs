@@ -9,6 +9,6 @@ namespace ProjectGFN.Boj4Nextop
     public enum ReadType
     {
         Unknown,
-        Content
+        Topic
     }
 }
