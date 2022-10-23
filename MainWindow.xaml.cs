@@ -304,6 +304,21 @@ namespace ProjectGFN
 
         private void xbApply_Click(object sender, RoutedEventArgs e)
         {
+            README a = new README();
+            README b = null;
+
+            b = a;
+
+            b.Child = new README("hi");
+            b = b.Child;
+
+            b.Child = new README("i'm child");
+            b = b.Child;
+
+            b.Child = new README("i'm child of child");
+
+            return;
+
             if (RepositoryManager.Repository == null)
             {
                 MessageBox.Show("Repository is null");

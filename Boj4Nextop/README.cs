@@ -11,7 +11,9 @@ namespace ProjectGFN.Boj4Nextop
     {
         public string Name { get; set; } = string.Empty;
         public List<Baekjoon> Contents { get; set; } = new List<Baekjoon>();
-        public List<README> Children { get; set; } = new List<README>();
+        public README Child { get; set; } = null;
+
+        public bool IsEmpty => string.IsNullOrEmpty(Name) && Contents.Count == 0;
 
         public README()
         {

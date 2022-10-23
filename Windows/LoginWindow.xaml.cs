@@ -26,6 +26,7 @@ namespace ProjectGFN
     public partial class LoginWindow : Window
     {
         private readonly Action<LoginWindow> _onLogin;
+        private bool _isInitialized = false;
 
         public LoginWindow(Action<LoginWindow> onLogin)
         {
@@ -56,6 +57,7 @@ namespace ProjectGFN
 
             if (await GitManager.Initialize(token))
             {
+                _isInitialized = true;
                 _onLogin(this);
             }
             else
@@ -94,6 +96,22 @@ namespace ProjectGFN
         private void xPasswordCheck_Checked(object sender, RoutedEventArgs e)
         {
             xPassword.IsEnabled = xPasswordCheck.IsChecked.Value;
+        }
+
+        private void LoginWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                xLogin_Click(null, null);
+            }
+        }
+
+        private void LoginWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!_isInitialized)
+            {
+                Application.Current.Shutdown();
+            }
         }
     }
 }
